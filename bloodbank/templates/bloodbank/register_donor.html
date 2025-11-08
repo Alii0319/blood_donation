@@ -1,0 +1,38 @@
+{% extends 'bloodbank/layout.html' %}
+
+{% block title %}Register Donor{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded-4">
+                <div class="card-body">
+                    <h3 class="text-center mb-4 text-primary fw-bold">Register as a Donor</h3>
+
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="mb-3">
+                                {{ field.errors }}
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        
+                        {# --- START: Changes for Centering and Width --- #}
+                        
+                        <div class="d-flex justify-content-center mt-3">
+                            <button type="submit" class="btn btn-danger btn-lg rounded-pill w-50"> 
+                                {# w-50 sets the width to 50% of the container #}
+                                Register
+                            </button>
+                        </div>
+                        
+                        {# --- END: Changes for Centering and Width --- #}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

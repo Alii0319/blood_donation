@@ -1,0 +1,59 @@
+{% extends 'bloodbank/layout.html' %}
+
+{% block title %}Register | Blood Bank{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5"> 
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                
+                <div class="card-header bg-danger text-white text-center py-3"> 
+                    <h3 class="fw-bold mb-0">Register Your Account</h3>
+                    <p class="mb-0 small">Join us and help save lives</p>
+                </div>
+
+                <div class="card-body bg-light p-4">
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        
+                        {# --- START: Custom Form Rendering for Centering and Width --- #}
+                        {% for field in form %}
+                        <div class="mb-3 d-flex justify-content-center">
+                            {# Inner container to set the width (e.g., w-75) #}
+                            <div class="w-75"> 
+                                
+                                {# NOTE: Labels are omitted here. Placeholders set in forms.py are used instead. #}
+                                
+                                {{ field }}
+                                
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">{{ field.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {# --- END: Custom Form Rendering --- #}
+                        
+                        {# --- Centered Button Styling (w-50) --- #}
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn btn-danger btn-lg rounded-pill w-50 shadow-sm">
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer text-center bg-white py-3">
+                    <small class="text-muted">
+                        Already have an account? 
+                        <a href="{% url 'login' %}" class="fw-semibold text-danger text-decoration-none">
+                            Login here
+                        </a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

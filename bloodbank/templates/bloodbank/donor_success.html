@@ -1,0 +1,13 @@
+{% extends 'bloodbank/layout.html' %}
+
+{% block title %}Donor Registered{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h2 class="text-success">Thank you for registering as a donor!</h2>
+    <p>Your information has been successfully saved in the database.</p>
+
+    <a href="{% url 'register_donor' %}" class="btn btn-danger mt-3">Register Another Donor</a>
+    <a href="{% url 'find_donors' %}" class="btn btn-outline-secondary mt-3">Find Donors</a>
+</div>
+{% endblock %}
