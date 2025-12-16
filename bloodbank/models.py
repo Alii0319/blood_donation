@@ -56,3 +56,19 @@ class Recipient(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.blood_group_needed})"
+
+
+class BloodRequest(models.Model):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected'),
+    ]
+
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requests_made')
+    donor = models.ForeignKey(Donor, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+    request_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.recipient.username} → {self.donor.name} ({self.status})"

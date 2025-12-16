@@ -17,8 +17,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
-    <!-- Navbar -->
-    <!-- Navbar -->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow-sm">
     <div class="container">
         <a class="navbar-brand fw-bold" href="{% url 'home' %}">🩸 Blood Bank</a>
@@ -32,21 +31,41 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/bloodbank/register/' %}active{% endif %}" 
-                       href="{% url 'register_donor' %}">
-                       Register Donor
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/bloodbank/find/' %}active{% endif %}" 
-                       href="{% url 'find_donors' %}">
-                       Find Donors
-                    </a>
-                </li>
 
-                <!-- ✅ Show different options based on login status -->
                 {% if user.is_authenticated %}
+
+                    <!-- Recipient Links -->
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'find_donors' %}active{% endif %}" 
+                           href="{% url 'find_donors' %}">
+                           🔍 Find Donors
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'recipient_requests' %}active{% endif %}" 
+                           href="{% url 'recipient_requests' %}">
+                           📋 My Requests
+                        </a>
+                    </li>
+
+                    <!-- Donor Links (only if user is registered as donor) -->
+                    {% if user.donor %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'donor_requests' %}active{% endif %}" 
+                               href="{% url 'donor_requests' %}">
+                               📥 Donor Requests
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'register_donor' %}active{% endif %}" 
+                               href="{% url 'register_donor' %}">
+                               📝 Register Donor
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- Welcome & Logout -->
                     <li class="nav-item">
                         <span class="nav-link text-white fw-semibold">
                             👋 Welcome, {{ user.username }}
@@ -57,50 +76,54 @@
                             🚪 Logout
                         </a>
                     </li>
+
                 {% else %}
+                    <!-- Guest Links -->
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/login/' %}active{% endif %}" href="{% url 'login' %}">
-                            🔑 Login
+                        <a class="nav-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}" 
+                           href="{% url 'login' %}">
+                           🔑 Login
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/register/' %}active{% endif %}" href="{% url 'register' %}">
-                            🧾 Register
+                        <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}" 
+                           href="{% url 'register' %}">
+                           🧾 Register
                         </a>
                     </li>
                 {% endif %}
+
             </ul>
         </div>
     </div>
 </nav>
 
+<!-- Flash Messages -->
+<div class="container mt-3">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm rounded-3" role="alert">
+                <strong>
+                    {% if message.tags == "success" %}✅ Success:{% elif message.tags == "error" %}⚠️ Error:{% elif message.tags == "warning" %}⚡ Warning:{% else %}ℹ️ Info:{% endif %}
+                </strong> {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
 
-    <!-- ✅ Flash Messages -->
-    <div class="container mt-3">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm rounded-3" role="alert">
-                    <strong>
-                        {% if message.tags == "success" %}✅ Success:{% elif message.tags == "error" %}⚠️ Error:{% elif message.tags == "warning" %}⚡ Warning:{% else %}ℹ️ Info:{% endif %}
-                    </strong> {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+<!-- Main Content -->
+<main class="flex-fill container mt-4">
+    {% block content %}
+    {% endblock %}
+</main>
 
-    <!-- Main Content -->
-    <main class="flex-fill container mt-4">
-        {% block content %}
-        {% endblock %}
-    </main>
+<!-- Footer -->
+<footer class="text-center mt-auto py-3 bg-light text-muted border-top">
+    <p class="mb-0">&copy; 2025 Blood Donation Management System</p>
+</footer>
 
-    <!-- Footer -->
-    <footer class="text-center mt-auto py-3 bg-light text-muted border-top">
-        <p class="mb-0">&copy; 2025 Blood Donation Management System</p>
-    </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

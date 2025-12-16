@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container py-4"> 
     
-    {# Centering wrapper for the Card #}
+    <!-- Search Card -->
     <div class="row justify-content-center">
         <div class="col-md-7 col-lg-5"> 
             <div class="card shadow-lg rounded-4 p-4">
@@ -15,12 +15,9 @@
                     {% csrf_token %}
                     
                     {% for field in form %}
-                        <div class="mb-3 d-flex justify-content-center">
-                            {# Set field width here for consistency #}
-                            <div class="w-100"> 
-                                {{ field.errors }}
-                                {{ field }}
-                            </div>
+                        <div class="mb-3">
+                            {{ field.errors }}
+                            {{ field }}
                         </div>
                     {% endfor %}
 
@@ -34,13 +31,14 @@
         </div>
     </div>
 
-    {# --- Donor Results Section --- #}
+    <!-- Donor Results -->
     {% if donors %}
-        <h4 class="mt-5 text-center text-danger">Available Donors</h4>
+        <h4 class="mt-5 text-center text-danger fw-bold">Available Donors</h4>
+
         <div class="row justify-content-center">
-            <div class="col-md-10"> {# Table wider than the card #}
+            <div class="col-md-11">
                 <div class="table-responsive mt-3">
-                    <table class="table table-bordered table-striped text-center">
+                    <table class="table table-bordered table-striped text-center align-middle">
                         <thead class="table-danger">
                             <tr>
                                 <th>Name</th>
@@ -48,6 +46,7 @@
                                 <th>City</th>
                                 <th>Blood Group</th>
                                 <th>Contact</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,7 +56,23 @@
                                     <td>{{ donor.age }}</td>
                                     <td>{{ donor.city }}</td>
                                     <td>{{ donor.blood_group }}</td>
-                                    <td>{{ donor.contact_number }}</td>
+
+                                    <!-- Privacy -->
+                                    <td class="text-muted">
+                                        Hidden
+                                    </td>
+
+                                    <!-- Request Button -->
+                                    <td>
+                                        {% if donor.user != request.user %}
+                                            <a href="{% url 'send_request' donor.id %}" 
+                                               class="btn btn-sm btn-danger rounded-pill">
+                                                Request Blood
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted small">You</span>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -65,8 +80,11 @@
                 </div>
             </div>
         </div>
+
     {% elif form.is_bound %}
-        <p class="text-muted mt-4 text-center">No donors found for the selected criteria.</p>
+        <p class="text-muted mt-4 text-center">
+            No donors found for the selected criteria.
+        </p>
     {% endif %}
 </div>
 {% endblock %}

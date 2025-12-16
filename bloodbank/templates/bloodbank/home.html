@@ -1,15 +1,65 @@
 {% extends 'bloodbank/layout.html' %}
 
-{% block title %}Home - Blood Bank{% endblock %}
+{% block title %}Dashboard | Blood Bank{% endblock %}
 
 {% block content %}
-<div class="text-center mt-5">
-    <h1 class="text-danger fw-bold">Welcome to the Blood Donation Management System</h1>
-    <p class="lead mt-3">Find donors, register yourself as a donor, and help save lives.</p>
+<div class="container mt-5">
 
-    <div class="mt-4">
-        <a href="{% url 'register_donor' %}" class="btn btn-danger btn-lg rounded-pill me-2">Register as Donor</a>
-        <a href="{% url 'find_donors' %}" class="btn btn-outline-danger btn-lg rounded-pill">Find Donors</a>
+    <!-- Welcome Section -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-danger">
+            👋 Welcome, {{ user.username }}
+        </h2>
+        <p class="text-muted mt-2">
+            Manage blood donations and help save lives
+        </p>
     </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row justify-content-center g-4">
+
+        <!-- Register Donor Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100 text-center rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-primary fw-bold">
+                        🩸 Become a Donor
+                    </h5>
+                    <p class="card-text text-muted mt-2">
+                        Register yourself as a blood donor and help those in need.
+                    </p>
+                    <a href="{% url 'register_donor' %}" class="btn btn-danger rounded-pill mt-3">
+                        Register as Donor
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Find Donor Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100 text-center rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-primary fw-bold">
+                        🔍 Find Blood Donors
+                    </h5>
+                    <p class="card-text text-muted mt-2">
+                        Search for available donors by blood group and city.
+                    </p>
+                    <a href="{% url 'find_donors' %}" class="btn btn-outline-danger rounded-pill mt-3">
+                        Find Donors
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Info Section -->
+    <div class="text-center mt-5">
+        <p class="text-muted small">
+            This system helps connect blood donors with recipients quickly and safely.
+        </p>
+    </div>
+
 </div>
 {% endblock %}

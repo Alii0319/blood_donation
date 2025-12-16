@@ -1,0 +1,43 @@
+{% extends 'bloodbank/layout.html' %}
+
+{% block title %}My Requests{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3 class="text-center text-danger mb-4">Blood Requests</h3>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <table class="table table-bordered text-center align-middle">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Recipient</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in requests %}
+                    <tr>
+                        <td>{{ req.recipient.username }}</td>
+                        <td>{{ req.status }}</td>
+                        <td>
+                            {% if req.status == 'Pending' %}
+                                <a href="{% url 'update_request' req.id 'Accepted' %}" class="btn btn-sm btn-success">Accept</a>
+                                <a href="{% url 'update_request' req.id 'Rejected' %}" class="btn btn-sm btn-danger">Reject</a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No requests</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
